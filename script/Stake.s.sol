@@ -6,7 +6,7 @@ import {Stake} from "../src/stake.sol";
 
 contract CounterScript is Script {
     Stake public stake;
-    uint mintAmount = 1e9;
+    uint256 mintAmount = 1e9;
 
     function setUp() public {}
 

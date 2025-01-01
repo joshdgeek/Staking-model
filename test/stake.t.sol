@@ -8,7 +8,7 @@ contract CounterTest is Test {
     Stake stake;
     address admin;
     address dummy;
-    uint mintAmount;
+    uint256 mintAmount;
 
     function setUp() public {
         dummy = 0x5B38Da6a701c568545dCfcB03FcB875f56beddC4;
@@ -30,31 +30,22 @@ contract CounterTest is Test {
     }
 
     function testStake() public {
-        vm.prank(dummy);
+        vm.startPrank(dummy);
         emit log_named_uint(" balance before STAKE", stake.balanceOf(dummy));
         stake.stake(1000 * 1e18, 1);
         emit log_named_uint(" balance after STAKE", stake.balanceOf(dummy));
+        vm.stopPrank();
 
-        assertNotEq(
-            stake.balanceOf(dummy),
-            1000 * 1e18,
-            "Staking transaction failed"
-        );
+        assertNotEq(stake.balanceOf(dummy), 1000 * 1e18, "Staking transaction failed");
     }
 
     function testUnstake() public {
         //stake
         vm.startPrank(dummy);
-        emit log_named_uint(
-            " balance before STAKE",
-            stake.balanceOf(dummy) / 1e18
-        );
+        emit log_named_uint(" balance before STAKE", stake.balanceOf(dummy) / 1e18);
 
         stake.stake(1000 * 1e18, 1);
-        emit log_named_uint(
-            " balance after STAKE",
-            stake.balanceOf(dummy) / 1e18
-        );
+        emit log_named_uint(" balance after STAKE", stake.balanceOf(dummy) / 1e18);
         vm.stopPrank();
 
         assertEq(stake.staked(dummy) > 0, true, "nope");
@@ -67,10 +58,7 @@ contract CounterTest is Test {
         vm.startPrank(dummy);
 
         stake.unStake(1000 * 10 ** 18, 3 days);
-        emit log_named_uint(
-            " balance AFTER UNSTAKE",
-            stake.balanceOf(dummy) / 10e18
-        );
+        emit log_named_uint(" balance AFTER UNSTAKE", stake.balanceOf(dummy) / 10e18);
 
         vm.stopPrank();
         assertNotEq(stake.balanceOf(dummy), 500 * 10 ** 18, "wrong");
