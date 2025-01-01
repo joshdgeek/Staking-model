@@ -8,7 +8,7 @@ Polyblade is a staking smart contract built using Solidity. The contract is base
 - **Staking Mechanism:** Users can stake their tokens for a specified lock-up period.
 - **Rewards:** Users earn rewards based on the duration of their staking.
 - **Penalty for Early Withdrawal:** A 5% penalty fee is applied if tokens are unstaked before the lock-up period ends.
-- **Admin Control:** Admin has the ability to mint and distribute tokens.
+- **Admin Control:** Admin has the ability to mint and distribute tokens as well as set penalty fees and APR returns.
 
 ---
 
