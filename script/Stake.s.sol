@@ -6,13 +6,14 @@ import {Stake} from "../src/stake.sol";
 
 contract CounterScript is Script {
     Stake public stake;
+    uint mintAmount = 1e9;
 
     function setUp() public {}
 
     function run() public {
         vm.startBroadcast();
 
-        stake = new Stake();
+        stake = new Stake(msg.sender, mintAmount);
 
         vm.stopBroadcast();
     }
