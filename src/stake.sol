@@ -8,10 +8,7 @@ import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Permit.sol";
 contract Stake is ERC20, ERC20Permit, Ownable {
     address public _admin;
 
-    constructor(
-        address admin,
-        uint256 mintAmount
-    ) ERC20("Polyblade", "PBD") Ownable(admin) ERC20Permit("Polyblade") {
+    constructor(address admin, uint256 mintAmount) ERC20("Polyblade", "PBD") Ownable(admin) ERC20Permit("Polyblade") {
         _admin = admin;
         _mint(address(this), mintAmount);
     }
@@ -22,8 +19,8 @@ contract Stake is ERC20, ERC20Permit, Ownable {
     mapping(address => uint256) public timeOfLockUp; //address to expected time of lockUp
 
     //
-    uint penaltyPercentage;
-    uint percentageRate;
+    uint256 penaltyPercentage;
+    uint256 percentageRate;
 
     //restricted function to request for token
     function requestToken(uint256 amount) public onlyOwner {
@@ -31,22 +28,19 @@ contract Stake is ERC20, ERC20Permit, Ownable {
     }
 
     // restricted function to set penalty percentage
-    function setPenaltyPercentage(uint penalty) public onlyOwner {
+    function setPenaltyPercentage(uint256 penalty) public onlyOwner {
         penaltyPercentage = penalty;
     }
 
     // restricted function to set percentage rate
-    function setPercentageRate(uint rate) public onlyOwner {
+    function setPercentageRate(uint256 rate) public onlyOwner {
         percentageRate = rate;
     }
 
     function stake(uint256 amount, uint256 time_months) external {
         require(time_months > 0, "invalid duration");
         require(amount > 0, "amount is less than zero");
-        require(
-            balanceOf(msg.sender) >= amount,
-            "not enough amount to initiate staking"
-        );
+        require(balanceOf(msg.sender) >= amount, "not enough amount to initiate staking");
 
         uint256 timeInMonths = time_months * 30 days;
         _transfer(msg.sender, address(this), amount);
@@ -65,10 +59,7 @@ contract Stake is ERC20, ERC20Permit, Ownable {
         uint256 penaltyFee = (amount * 5) / 100; // Apply penalty fee on the unstaked amount
 
         require(amount > 0, "Amount must be greater than zero");
-        require(
-            staked[msg.sender] >= amount,
-            "Amount must be less than or equal to staked balance"
-        );
+        require(staked[msg.sender] >= amount, "Amount must be less than or equal to staked balance");
 
         // Mint staking rewards to the user's address
         claim();
